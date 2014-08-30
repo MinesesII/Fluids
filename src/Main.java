@@ -35,7 +35,7 @@ public class Main extends SimpleApplication {
 	}
 
 	public void addWaterBlock(Vector3f pos, int level){
-		BlockFluid fluid = new BlockFluid(new Vector3i((int)pos.x,(int)pos.y,(int)pos.z),1);
+		BlockFluid fluid = new BlockFluid(new Vector3i((int)pos.x,(int)pos.y,(int)pos.z),level);
 		fluid.addControl(new FluidControl());
 		rootNode.attachChild(fluid);
 		blocks[(int) pos.x][(int) (pos.y)][(int) pos.z]=fluid;

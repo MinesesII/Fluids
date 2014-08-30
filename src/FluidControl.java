@@ -27,7 +27,7 @@ public class FluidControl extends AbstractControl implements Savable, Cloneable 
 	@Override
 	protected void controlUpdate(float tpf){
 		if(spatial != null && isCheck==false) {
-			if(water.getLevel()!=8)
+			if(water.getLevel()<=8)
 			{
 				for(int x=-1; x<1 ; x++)
 				{
@@ -35,6 +35,7 @@ public class FluidControl extends AbstractControl implements Savable, Cloneable 
 					{
 						if(canExtend(x,z))
 						{
+							System.out.println(water.getLevel());
 							Main.getInstance().addWaterBlock(new Vector3f(water.getLocation().x+x,water.getLocation().y,water.getLocation().z+z),water.getLevel()+1);
 						}
 					}
