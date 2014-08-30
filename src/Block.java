@@ -23,7 +23,7 @@ public abstract class Block extends Node{
 		
 		this.pos = pos;
 		
-		materialBlock = GameState.getMaterialManager().getTextureBlock(id);
+		materialBlock = new MaterialBlock("grass.jpg");
 		
 		initFaces();
 	}
