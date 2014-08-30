@@ -2,6 +2,7 @@ import com.jme3.collision.CollisionResults;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.MouseButtonTrigger;
+import com.jme3.math.Vector3f;
 
 public class Events implements ActionListener
 {
@@ -22,7 +23,7 @@ public class Events implements ActionListener
 			if (results.size()!=0){
 				Block block = (Block)results.getCollision(0).getGeometry().getParent();
 				if(results.getCollision(0).getGeometry().getName().contentEquals(FaceID.UP.toString())){
-					Main.getInstance().addWaterBlock(block.getLocation());
+					Main.getInstance().addWaterBlock(new Vector3f(block.getLocation().x,block.getLocation().y+1,block.getLocation().z),1);
 				}
 			}
 		}

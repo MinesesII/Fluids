@@ -3,7 +3,6 @@
 import com.jme3.app.SimpleApplication;
 import com.jme3.collision.CollisionResults;
 import com.jme3.light.AmbientLight;
-import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
@@ -30,15 +29,16 @@ public class Main extends SimpleApplication {
 		AmbientLight al = new AmbientLight();
 		al.setColor(ColorRGBA.White.mult(3f));
 		rootNode.addLight(al);
-		blocks = new Block[32][32][32];
+		blocks = new Block[64][64][64];
 		getRootNode().attachChild(createTerrain());
 		events = new Events();
 	}
 
-	public void addWaterBlock(Vector3f pos){
-		BlockFluid fluid = new BlockFluid(new Vector3i((int)pos.x,(int)pos.y+1,(int)pos.z));
+	public void addWaterBlock(Vector3f pos, int level){
+		BlockFluid fluid = new BlockFluid(new Vector3i((int)pos.x,(int)pos.y,(int)pos.z),1);
+		fluid.addControl(new FluidControl());
 		rootNode.attachChild(fluid);
-		blocks[(int) pos.x][(int) (pos.y+1)][(int) pos.z]=fluid;
+		blocks[(int) pos.x][(int) (pos.y)][(int) pos.z]=fluid;
 	}
 
 	public static Main getInstance()
