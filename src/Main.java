@@ -25,7 +25,7 @@ public class Main extends SimpleApplication {
 	@Override
 	public void simpleInitApp() {
 		clientApp.getFlyByCamera().setEnabled(false);
-		getCamera().setLocation(new Vector3f(16,4,32));
+		getCamera().setLocation(new Vector3f(32,2,40));
 		AmbientLight al = new AmbientLight();
 		al.setColor(ColorRGBA.White.mult(3f));
 		rootNode.addLight(al);

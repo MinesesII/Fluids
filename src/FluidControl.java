@@ -9,6 +9,7 @@ public class FluidControl extends AbstractControl implements Savable, Cloneable 
 
 	BlockFluid water;
 	boolean isCheck=false;
+	int tick=0;
 
 	public FluidControl(){} 
 
@@ -26,28 +27,40 @@ public class FluidControl extends AbstractControl implements Savable, Cloneable 
 
 	@Override
 	protected void controlUpdate(float tpf){
-		if(spatial != null && isCheck==false) {
-			if(water.getLevel()<=8)
+		if(spatial != null && isCheck==false) 
+		{
+			if(tick>100)
 			{
-				for(int x=-1; x<1 ; x++)
+				if(water.getLevel()<=8 && Main.getInstance().getBlocks()[(int)water.getLocation().x][(int)water.getLocation().y-1][(int)water.getLocation().z]!=null)
 				{
-					for(int z=-1; z<1 ; z++)
+					for(int x=-1; x<=1 ; x++)
 					{
-						if(canExtend(x,z))
+						for(int z=-1; z<=1 ; z++)
 						{
-							System.out.println(water.getLevel());
-							Main.getInstance().addWaterBlock(new Vector3f(water.getLocation().x+x,water.getLocation().y,water.getLocation().z+z),water.getLevel()+1);
+							if(canExtend((int)water.getLocation().x+x,(int) water.getLocation().y, (int)water.getLocation().z+z))
+							{
+								Main.getInstance().addWaterBlock(new Vector3f(water.getLocation().x+x,water.getLocation().y,water.getLocation().z+z),water.getLevel()+1);
+							}
 						}
 					}
 				}
+				if(canExtend((int)water.getLocation().x,(int)water.getLocation().y-1,(int)water.getLocation().z))
+				{
+					Main.getInstance().addWaterBlock(new Vector3f(water.getLocation().x,water.getLocation().y-1,water.getLocation().z),water.getLevel()+1);
+				}
+				isCheck=true;
+				tick=0;
+			}
+			else
+			{
+				tick++;
 			}
 		}
-		isCheck=true;
 	}
 
-	private boolean canExtend(int x, int z)
+	private boolean canExtend(int x, int y, int z)
 	{
-		if(Main.getInstance().getBlocks()[(int) (water.getLocation().x+x)][(int) water.getLocation().y][(int) (water.getLocation().z+z)]==null)
+		if(Main.getInstance().getBlocks()[x][y][z]==null)
 		{
 			return true;
 		}
