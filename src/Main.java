@@ -10,15 +10,14 @@ public class Main extends SimpleApplication {
 	private static Main clientApp;
 
 	public static void main(String[] args){
-		Main app = new Main();
-		app.start(); 
+		clientApp = new Main();
+		clientApp.start(); 
 	}
 
 	@Override
 	public void simpleInitApp() {
-		clientApp=this;
 		clientApp.getCamera().setLocation(new Vector3f(0,0,3));
-		rootNode.attachChild(new Socle());
+		clientApp.getRootNode().attachChild(new Socle());
 	}
 
 	public static Main getInstance()
