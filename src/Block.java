@@ -20,7 +20,7 @@ public abstract class Block extends Node{
 		
 		this.pos = pos;
 		
-		materialBlock = new MaterialBlock(SimpleBlockInfo.Grass.getPathsTextures());
+		materialBlock = new MaterialBlock(SimpleBlockInfo.values()[id].getPathsTextures());
 		
 		initFaces();
 	}

@@ -1,5 +1,4 @@
-
-
+import com.jme3.collision.CollisionResults;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.MouseButtonTrigger;
@@ -19,7 +18,13 @@ public class Events implements ActionListener
 
 	public void onAction(String name, boolean keyPressed, float tpf) {
 		if (name.contentEquals("rightclick") && !keyPressed){
-			
+			CollisionResults results = Main.getInstance().getPointedObject();
+			if (results.size()!=0){
+				Block block = (Block)results.getCollision(0).getGeometry().getParent();
+				if(results.getCollision(0).getGeometry().getName().contentEquals(FaceID.UP.toString())){
+					Main.getInstance().addWaterBlock(block.getLocation());
+				}
+			}
 		}
 	}
 }

@@ -1,8 +1,12 @@
 
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.collision.CollisionResults;
+import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Ray;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 
@@ -12,7 +16,7 @@ import com.jme3.scene.Node;
 public class Main extends SimpleApplication {
 	private static Main clientApp;
 	private Events events;
-	private Block[][][]blocks ;
+	private Block[][][]blocks;
 
 	public static void main(String[] args){
 		clientApp = new Main();
@@ -21,25 +25,27 @@ public class Main extends SimpleApplication {
 
 	@Override
 	public void simpleInitApp() {
-		clientApp.getCamera().setLocation(new Vector3f(0,0,3));
-		DirectionalLight sun = new DirectionalLight();
-		sun.setColor(ColorRGBA.White);
-		sun.setDirection(new Vector3f(-.5f,-.5f,-.5f).normalizeLocal());
-		rootNode.addLight(sun);
-		clientApp.getRootNode().attachChild(createTerrain());
-		events = new Events();
+		clientApp.getFlyByCamera().setEnabled(false);
+		getCamera().setLocation(new Vector3f(16,4,32));
+		AmbientLight al = new AmbientLight();
+		al.setColor(ColorRGBA.White.mult(3f));
+		rootNode.addLight(al);
 		blocks = new Block[32][32][32];
+		getRootNode().attachChild(createTerrain());
+		events = new Events();
 	}
-	
-	public void addWaterBlock(){
-		
+
+	public void addWaterBlock(Vector3f pos){
+		BlockFluid fluid = new BlockFluid(new Vector3i((int)pos.x,(int)pos.y+1,(int)pos.z));
+		rootNode.attachChild(fluid);
+		blocks[(int) pos.x][(int) (pos.y+1)][(int) pos.z]=fluid;
 	}
 
 	public static Main getInstance()
 	{
 		return clientApp;
 	}
-	
+
 	private Node createTerrain()
 	{
 		Node node = new Node();
@@ -47,14 +53,27 @@ public class Main extends SimpleApplication {
 		{
 			for(int j = 0 ; j<32; j++)
 			{
-				node.attachChild(new BlockGrass(new Vector3i(i,0,j)));
+				BlockGrass grass=new BlockGrass(new Vector3i(i,0,j));
+				blocks[i][0][j]=grass;
+				node.attachChild(grass);
 			}
 		}
 		return node;
 	}
-	
+
 	public Block[][][] getBlocks()
 	{
 		return blocks;
+	}
+
+	public CollisionResults getPointedObject(){
+
+		CollisionResults results = new CollisionResults();
+		Vector2f click2d = getInputManager().getCursorPosition();
+		Vector3f click3d = getCamera().getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 0f).clone();
+		Vector3f dir = getCamera().getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 1f).subtractLocal(click3d).normalizeLocal();
+		Ray ray = new Ray(click3d, dir);
+		getRootNode().collideWith(ray, results);
+		return results;
 	}
 }
