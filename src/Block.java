@@ -1,6 +1,4 @@
 
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
@@ -14,7 +12,6 @@ public abstract class Block extends Node{
 	
 	private final Geometry[] faces = new Geometry[6];
 	private Vector3i pos;
-	private Material mat;
 	//private final RigidBodyControl rigidBodyControl = new RigidBodyControl(0.0f);;
 	private double timeToBreak = 1;
 	private MaterialBlock materialBlock;
@@ -23,7 +20,7 @@ public abstract class Block extends Node{
 		
 		this.pos = pos;
 		
-		materialBlock = new MaterialBlock("grass.jpg");
+		materialBlock = new MaterialBlock(SimpleBlockInfo.Dirt.getPathsTextures()[0]);
 		
 		initFaces();
 	}
@@ -50,9 +47,7 @@ public abstract class Block extends Node{
 
 		Mesh mesh = new Mesh();
 		
-		ColorRGBA color = null;
-
-        Vector3f [] vertices = new Vector3f[4];
+		Vector3f [] vertices = new Vector3f[4];
         int [] indexes = { 2,0,1, 1,3,2 };
         int [] indexes_ = { 1,0,2, 2,3,1 };
         
@@ -68,8 +63,6 @@ public abstract class Block extends Node{
             normals = new float[]{1,0,0, 1,0,0, 1,0,0, 1,0,0};
             
             indexes = indexes_;
-            
-            color = ColorRGBA.Brown;
         }
         else if(faceID == FaceID.EAST) {
         	
@@ -81,7 +74,6 @@ public abstract class Block extends Node{
             normals = new float[]{-1,0,0, -1,0,0, -1,0,0, -1,0,0};
             
             indexes = indexes_;
-            color = ColorRGBA.Brown;
         }
         else if(faceID == FaceID.SOUTH) {
         	
@@ -91,7 +83,6 @@ public abstract class Block extends Node{
             vertices[3] = new Vector3f(pos.x+size,pos.y+size,pos.z+size);
 
             normals = new float[]{0,0,-1, 0,0,-1, 0,0,-1, 0,0,-1};
-            color = ColorRGBA.Brown;
         }
         else if(faceID == FaceID.WEST) {
         	
@@ -102,7 +93,6 @@ public abstract class Block extends Node{
             vertices[3] = new Vector3f(pos.x,pos.y+size,pos.z+size);
 
             normals = new float[]{0,0,1, 0,0,1, 0,0,1, 0,0,1};
-            color = ColorRGBA.Brown;
         }
         else if(faceID == FaceID.UP) {
         	
@@ -114,7 +104,6 @@ public abstract class Block extends Node{
             normals = new float[]{0,1,0, 0,1,0, 0,1,0, 0,1,0};
             
             indexes = indexes_;
-            color = ColorRGBA.Green;
         } 
         else if(faceID == FaceID.DOWN) {
         	
@@ -124,7 +113,6 @@ public abstract class Block extends Node{
             vertices[3] = new Vector3f(pos.x+size,pos.y,pos.z+size);
 
             normals = new float[]{0,-1,0, 0,-1,0, 0,-1,0, 0,-1,0};
-            color = ColorRGBA.Brown;
         }
         
         Vector2f[] texCoord = new Vector2f[4];

@@ -1,0 +1,5 @@
+/bin/
+.classpath
+.project
+OpenAL64.dll
+lwjgl64.dll
