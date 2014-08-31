@@ -25,7 +25,7 @@ public class Main extends SimpleApplication {
 	@Override
 	public void simpleInitApp() {
 		clientApp.getFlyByCamera().setEnabled(false);
-		getCamera().setLocation(new Vector3f(32,2,40));
+		getCamera().setLocation(new Vector3f(32,12,40));
 		AmbientLight al = new AmbientLight();
 		al.setColor(ColorRGBA.White.mult(3f));
 		rootNode.addLight(al);
@@ -53,8 +53,8 @@ public class Main extends SimpleApplication {
 		{
 			for(int j = 0 ; j<32; j++)
 			{
-				BlockGrass grass=new BlockGrass(new Vector3i(i,0,j));
-				blocks[i][0][j]=grass;
+				BlockGrass grass=new BlockGrass(new Vector3i(i,10,j));
+				blocks[i][10][j]=grass;
 				node.attachChild(grass);
 			}
 		}

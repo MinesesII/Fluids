@@ -8,7 +8,6 @@ import com.jme3.scene.control.AbstractControl;
 public class FluidControl extends AbstractControl implements Savable, Cloneable {
 
 	BlockFluid water;
-	boolean isCheck=false;
 	int tick=0;
 
 	public FluidControl(){} 
@@ -27,9 +26,9 @@ public class FluidControl extends AbstractControl implements Savable, Cloneable 
 
 	@Override
 	protected void controlUpdate(float tpf){
-		if(spatial != null && isCheck==false) 
+		if(spatial != null) 
 		{
-			if(tick>100)
+			if(tick>50)
 			{
 				if(water.getLevel()<=8 && Main.getInstance().getBlocks()[(int)water.getLocation().x][(int)water.getLocation().y-1][(int)water.getLocation().z]!=null)
 				{
@@ -46,10 +45,10 @@ public class FluidControl extends AbstractControl implements Savable, Cloneable 
 				}
 				if(canExtend((int)water.getLocation().x,(int)water.getLocation().y-1,(int)water.getLocation().z))
 				{
-					Main.getInstance().addWaterBlock(new Vector3f(water.getLocation().x,water.getLocation().y-1,water.getLocation().z),water.getLevel()+1);
+					Main.getInstance().addWaterBlock(new Vector3f(water.getLocation().x,water.getLocation().y-1,water.getLocation().z),1);
 				}
-				isCheck=true;
 				tick=0;
+				this.enabled=false;
 			}
 			else
 			{
