@@ -1,8 +1,12 @@
 
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.audio.AudioNode;
 import com.jme3.collision.CollisionResults;
+import com.jme3.effect.ParticleEmitter;
+import com.jme3.effect.ParticleMesh.Type;
 import com.jme3.light.AmbientLight;
+import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
@@ -14,8 +18,8 @@ import com.jme3.scene.Node;
  * moving the mouse and pressing the WASD keys. */
 public class Main extends SimpleApplication {
 	private static Main clientApp;
-	private Events events;
 	private Block[][][]blocks;
+	private String testType="audio";
 
 	public static void main(String[] args){
 		clientApp = new Main();
@@ -24,14 +28,62 @@ public class Main extends SimpleApplication {
 
 	@Override
 	public void simpleInitApp() {
-		clientApp.getFlyByCamera().setEnabled(false);
-		getCamera().setLocation(new Vector3f(32,12,40));
-		AmbientLight al = new AmbientLight();
-		al.setColor(ColorRGBA.White.mult(3f));
-		rootNode.addLight(al);
-		blocks = new Block[64][64][64];
-		getRootNode().attachChild(createTerrain());
-		events = new Events();
+		if(testType.contentEquals("fluids"))
+		{
+			clientApp.getFlyByCamera().setEnabled(false);
+			getCamera().setLocation(new Vector3f(32,12,40));
+			AmbientLight al = new AmbientLight();
+			al.setColor(ColorRGBA.White.mult(3f));
+			rootNode.addLight(al);
+			blocks = new Block[64][64][64];
+			getRootNode().attachChild(createTerrain());
+			new Events();
+		}
+		if(testType.contentEquals("audio"))
+		{
+			AudioNode music = new AudioNode(assetManager, "Audio/music1.ogg", true);
+			music.play();
+		}
+		if(testType.contentEquals("particle"))
+		{
+			ParticleEmitter fire = 
+					new ParticleEmitter("Emitter", Type.Triangle, 30);
+			Material mat_red = new Material(assetManager, 
+					"Common/MatDefs/Misc/Particle.j3md");
+			mat_red.setTexture("Texture", assetManager.loadTexture(
+					"Effects/Explosion/flame.png"));
+			fire.setMaterial(mat_red);
+			fire.setImagesX(2); 
+			fire.setImagesY(2); // 2x2 texture animation
+			fire.setEndColor(  new ColorRGBA(1f, 0f, 0f, 1f));   // red
+			fire.setStartColor(new ColorRGBA(1f, 1f, 0f, 0.5f)); // yellow
+			fire.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 2, 0));
+			fire.setStartSize(1.5f);
+			fire.setEndSize(0.1f);
+			fire.setGravity(0, 0, 0);
+			fire.setLowLife(1f);
+			fire.setHighLife(3f);
+			fire.getParticleInfluencer().setVelocityVariation(0.3f);
+			rootNode.attachChild(fire);
+
+			ParticleEmitter debris = 
+					new ParticleEmitter("Debris", Type.Triangle, 10);
+			Material debris_mat = new Material(assetManager, 
+					"Common/MatDefs/Misc/Particle.j3md");
+			debris_mat.setTexture("Texture", assetManager.loadTexture(
+					"Effects/Explosion/Debris.png"));
+			debris.setMaterial(debris_mat);
+			debris.setImagesX(3); 
+			debris.setImagesY(3); // 3x3 texture animation
+			debris.setRotateSpeed(4);
+			debris.setSelectRandomImage(true);
+			debris.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 4, 0));
+			debris.setStartColor(ColorRGBA.White);
+			debris.setGravity(0, 6, 0);
+			debris.getParticleInfluencer().setVelocityVariation(.60f);
+			rootNode.attachChild(debris);
+			debris.emitAllParticles();
+		}
 	}
 
 	public void addWaterBlock(Vector3f pos, int level){
