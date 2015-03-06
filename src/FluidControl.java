@@ -30,7 +30,7 @@ public class FluidControl extends AbstractControl implements Savable, Cloneable 
 		{
 			if(tick>50)
 			{
-				if(water.getLevel()<=8 && Main.getInstance().getBlocks()[(int)water.getLocation().x][(int)water.getLocation().y-1][(int)water.getLocation().z]!=null)
+				if(water.getLevel()<=4 && Main.getInstance().getBlocks()[(int)water.getLocation().x][(int)water.getLocation().y-1][(int)water.getLocation().z]!=null)
 				{
 					for(int x=-1; x<=1 ; x++)
 					{
@@ -38,7 +38,14 @@ public class FluidControl extends AbstractControl implements Savable, Cloneable 
 						{
 							if(canExtend((int)water.getLocation().x+x,(int) water.getLocation().y, (int)water.getLocation().z+z))
 							{
-								Main.getInstance().addWaterBlock(new Vector3f(water.getLocation().x+x,water.getLocation().y,water.getLocation().z+z),water.getLevel()+1);
+								if(z==0 || x==0)
+								{
+									Main.getInstance().addWaterBlock(new Vector3f(water.getLocation().x+x,water.getLocation().y,water.getLocation().z+z),water.getLevel()+1);
+								}
+								else
+								{
+									Main.getInstance().addWaterBlock(new Vector3f(water.getLocation().x+x,water.getLocation().y,water.getLocation().z+z),water.getLevel()+2);
+								}
 							}
 						}
 					}

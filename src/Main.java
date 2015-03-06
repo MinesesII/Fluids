@@ -2,6 +2,7 @@
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.audio.AudioNode;
+import com.jme3.audio.Environment;
 import com.jme3.collision.CollisionResults;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh.Type;
@@ -19,7 +20,7 @@ import com.jme3.scene.Node;
 public class Main extends SimpleApplication {
 	private static Main clientApp;
 	private Block[][][]blocks;
-	private String testType="audio";
+	private String testType="fluids";
 
 	public static void main(String[] args){
 		clientApp = new Main();
